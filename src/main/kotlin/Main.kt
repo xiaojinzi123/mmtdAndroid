@@ -2,12 +2,22 @@ import java.io.File
 import java.io.InputStreamReader
 
 fun main(args: Array<String>) {
+
     if (args.isEmpty()) {
         throw IllegalArgumentException("args is empty!!!")
     }
+
+    // 是否是 Windows
+    val isWindows = System.getProperty("os.name").contains("Windows")
+    println("isWindows = $isWindows")
+
     val fileName = args.first()
     // 获取命令调用的目录
-    val targetFolderPath = InputStreamReader(Runtime.getRuntime().exec("pwd").inputStream).readText().trim()
+    val targetFolderPath = if (isWindows) {
+        System.getProperty("user.dir")
+    } else {
+        InputStreamReader(Runtime.getRuntime().exec("pwd").inputStream).readText().trim()
+    }
     // val targetFolderPath = "/Users/hhkj/Downloads/编组 3_slices"
     val folderFile = File(targetFolderPath)
     // 文件夹重命名
